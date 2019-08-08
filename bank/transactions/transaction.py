@@ -19,7 +19,7 @@ transactions = [
 
 mytransaction = []
 mytransaction_debit = []
-mytransaction_credit = []am
+mytransaction_credit = []
 
 
 def transfer():  #Transaction creation
@@ -43,9 +43,9 @@ def allTransactions():   #Credit details
             mytransaction.append(trans)
     print(mytransaction)
 
-print("Debit Transactions")
-debited()
-print("Credit Transactions")
-credited()
-print("All Transactions")
-allTransactions()
+# print("Debit Transactions")
+# debited()
+# print("Credit Transactions")
+# credited()
+# print("All Transactions")
+# allTransactions()
