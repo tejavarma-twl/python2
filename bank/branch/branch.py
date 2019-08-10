@@ -13,9 +13,9 @@
 import mysql.connector as mysql
 
 mydb = mysql.connect(host='localhost',user='root',password='',database='bank',port=3307)
-mydb2 = mysql.connect(host='localhost',user='root',password='admin',database='bank',port=3306)
+# mydb2 = mysql.connect(host='localhost',user='root',password='admin',database='bank',port=3306)
 dbop = mydb.cursor()
-dbop2 = mydb2.cursor()
+# dbop2 = mydb2.cursor()
 
 def creation():
     bank_name = input("Bank Name")
@@ -28,9 +28,6 @@ def creation():
         res = dbop.execute("INSERT INTO `branch` (`bank_id`, `bank_name`, `bank_branch`, `bank_ifsc`, `bank_branchcode`, `bank_address`) VALUES (NULL, %s, %s, %s, %s, %s)",(bank_name,bank_branch,bank_ifsc,bank_branchcode,bank_address))
         # 'ICICI', 'Vizag', 'ICIC0000365', '0365', 'Dwarakanagar'
         mydb.commit()
-        res2 = dbop2.execute("INSERT INTO `branch` (`bank_id`, `bank_name`, `bank_branch`, `bank_ifsc`, `bank_branchcode`, `bank_address`) VALUES (NULL, %s, %s, %s, %s, %s)",(bank_name,bank_branch,bank_ifsc,bank_branchcode,bank_address))
-        # 'ICICI', 'Vizag', 'ICIC0000365', '0365', 'Dwarakanagar'
-        mydb2.commit()
     except mysql.Error as err:
         print("Failed inserting in database: {}".format(err))
         exit(1)

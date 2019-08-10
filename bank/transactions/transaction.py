@@ -6,6 +6,13 @@
 # `trans_createdon` DATETIME NOT NULL , `trans_status` VARCHAR(10) NOT NULL , 
 # PRIMARY KEY (`trans_id`)) ENGINE = InnoDB;
 
+from config import db
+
+INSERT `transactions`
+
+db.dbop.execute("UPDATE `account` SET `user_balance` = %s WHERE `user_id` = %s",(balance,id))
+db.dbop.execute("UPDATE `account` SET `user_balance` = %s WHERE `user_id` = %s",(balance,id))
+
 transactions = [
     {'trans_id':'123','trans_sender':'teja','trans_receiver':'avi',
 'trans_amount':'2200000','trans_mode':'rtgs','trans_date':'6/19','trans_time':'9:00 am'},
