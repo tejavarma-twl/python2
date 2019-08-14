@@ -1,17 +1,30 @@
-# trans_id trans_sender trans_receiver trans_amount trans_mode trans_date trans_time
+from config.db import mydb, dbop as cursor
+import time    
 
-# CREATE TABLE `bank`.`transactions` ( `trans_id` INT NOT NULL AUTO_INCREMENT , 
-# `trans_sender` INT NOT NULL , `trans_receiver` INT NOT NULL , 
-# `trans_amount` FLOAT NOT NULL , `trans_mode` VARCHAR(5) NOT NULL , 
-# `trans_createdon` DATETIME NOT NULL , `trans_status` VARCHAR(10) NOT NULL , 
-# PRIMARY KEY (`trans_id`)) ENGINE = InnoDB;
+def transfer():  #Transaction creation
+    sender = int(input("Enter your account number : "))
+    amount = int(input("Enter amount : "))
+    receiver = int(input("Enter receiver account number : "))
 
-from config import db
+    cursor.execute("SELECT `user_balance` from `accounts` WHERE `user_account` = %s", (sender,))
+    res = cursor.fetchone()
+    if(res['user_balance']<amount):
+        print("Insufficient funds!")
+    else:
+        currTime = time.strftime('%Y-%m-%d %H:%M:%S')
+        cursor.execute("INSERT INTO `transactions` (`trans_id`, `trans_sender`, `trans_receiver`, `trans_amount`, `trans_mode`, `trans_createdon`, `trans_status`) VALUES (NULL, %s, %s, %s, %s, %s, %s)",(sender,receiver,amount,'NEFT',currTime,'success'))
+        mydb.commit()
+        cursor.execute("SELECT `user_balance` from `accounts` WHERE `user_account` = %s", (receiver,))
+        res2 = cursor.fetchone()
+        sbalance = res['user_balance']-amount
+        rbalance = res2['user_balance']+amount
+        cursor.execute("UPDATE `accounts` SET `user_balance` = %s WHERE `user_account` = %s",(sbalance,sender))
+        mydb.commit()
+        cursor.execute("UPDATE `accounts` SET `user_balance` = %s WHERE `user_account` = %s",(rbalance,receiver))
+        mydb.commit()
 
-INSERT `transactions`
 
-db.dbop.execute("UPDATE `account` SET `user_balance` = %s WHERE `user_id` = %s",(balance,id))
-db.dbop.execute("UPDATE `account` SET `user_balance` = %s WHERE `user_id` = %s",(balance,id))
+
 
 transactions = [
     {'trans_id':'123','trans_sender':'teja','trans_receiver':'avi',
@@ -29,8 +42,6 @@ mytransaction_debit = []
 mytransaction_credit = []
 
 
-def transfer():  #Transaction creation
-    pass
 
 def debited():    #Debit details of account
     for trans in transactions:
@@ -56,3 +67,11 @@ def allTransactions():   #Credit details
 # credited()
 # print("All Transactions")
 # allTransactions()
+
+# trans_id trans_sender trans_receiver trans_amount trans_mode trans_date trans_time
+
+# CREATE TABLE `bank`.`transactions` ( `trans_id` INT NOT NULL AUTO_INCREMENT , 
+# `trans_sender` INT NOT NULL , `trans_receiver` INT NOT NULL , 
+# `trans_amount` FLOAT NOT NULL , `trans_mode` VARCHAR(5) NOT NULL , 
+# `trans_createdon` DATETIME NOT NULL , `trans_status` VARCHAR(10) NOT NULL , 
+# PRIMARY KEY (`trans_id`)) ENGINE = InnoDB;

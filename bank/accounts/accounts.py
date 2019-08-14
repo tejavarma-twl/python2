@@ -16,11 +16,11 @@ def get_ifsc_code():
     res = db.dbop.fetchall()
     i = 1
     for r in res:
-        print('Select',i,'for',r[0],r[1],r[2])
+        print('Select',i,'for',r['bank_name'],r['bank_address'],r['bank_ifsc'])
         i += 1
     branch = int(input('Select branch : '))
     if branch >=1 and branch <= len(res):
-        return res[branch-1][2]
+        return res[branch-1]['bank_ifsc']
 
 def create_account():
     ifsc    =   get_ifsc_code()
